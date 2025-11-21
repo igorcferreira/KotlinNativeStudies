@@ -1,0 +1,19 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    arkana (2.1.1)
+      dotenv (~> 2.7)
+      rainbow (~> 3.1.1)
+      yaml (~> 0.2)
+    dotenv (2.8.1)
+    rainbow (3.1.1)
+    yaml (0.4.0)
+
+PLATFORMS
+  arm64-darwin-24
+
+DEPENDENCIES
+  arkana
+
+BUNDLED WITH
+   2.4.19
