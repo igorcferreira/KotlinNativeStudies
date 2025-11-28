@@ -1,0 +1,33 @@
+{
+  "originHash" : "37910260c754c710e6b82f50c74d540f4265fb6adb9a565c5e24b5db47de5017",
+  "pins" : [
+    {
+      "identity" : "kmp-nativecoroutines",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/rickclephas/KMP-NativeCoroutines.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "c50f752099fe9a037cb6c7de1f4077bf257b5621"
+      }
+    },
+    {
+      "identity" : "microsoft-authentication-library-for-objc",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/AzureAD/microsoft-authentication-library-for-objc",
+      "state" : {
+        "revision" : "231af305ec9c4634f32af0d43a3765b5b00e261d",
+        "version" : "2.6.0"
+      }
+    },
+    {
+      "identity" : "rxswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ReactiveX/RxSwift.git",
+      "state" : {
+        "revision" : "5004a18539bd68905c5939aa893075f578f4f03d",
+        "version" : "6.9.1"
+      }
+    }
+  ],
+  "version" : 3
+}

@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SharePoint Embedded</string>
+    <string name="no_item_selected">No Item selected</string>
+    <string name="empty_folder">Empty Folder</string>
+</resources>
