@@ -1,0 +1,10 @@
+result_path: 'arkana' # Optional. Destination path of the generated code, related to the path of this config file. Defaults to ArkanaKeys.
+is_kotlin_multiplatform_module: true  # Optional. Whether the generated Kotlin module is a multiplatform module. One of: true, false. Defaults to false.
+kotlin_jvm_toolchain_version: 21 # Optional. The kotlin JVM toolchain JDK version to be used in the generated build.gradle file. Defaults to 11.
+global_secrets: # Optional. List of secrets that are the same regardless of which environment is being built. Defaults
+  - TenantId
+  - ClientId
+  - ClientSecret
+  - ContainerId
+  - DisplayItemId  # The ID where the signatures will be uploaded. Use 'root' for the container root folder
+  - TemplateItemId # The ID of the PDF file which will be used as template
