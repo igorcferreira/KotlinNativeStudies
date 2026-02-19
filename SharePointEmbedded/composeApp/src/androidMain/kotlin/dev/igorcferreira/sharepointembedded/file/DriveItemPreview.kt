@@ -21,7 +21,7 @@ import dev.igorcferreira.msgraphapi.files.response.DriveItem
 import dev.igorcferreira.sharepointembedded.ItemPreviewViewModel
 import dev.igorcferreira.sharepointembedded.di.DIHelper
 import dev.igorcferreira.sharepointembedded.rememberSerialSaveable
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.KoinApplicationPreview
 

@@ -3,7 +3,6 @@
 package dev.igorcferreira.msgraphapi.authentication
 
 import cocoapods.MSAL.*
-import dev.igorcferreira.msgraphapi.network.NetworkException
 import kotlinx.cinterop.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +19,6 @@ actual class MSAuthenticationProvider actual constructor(
     private val clientId: String,
     private val scopes: List<String>
 ): TokenProvider, UserProvider {
-    @Throws(NetworkException::class, AuthenticationError::class, Exception::class)
     actual override suspend fun getToken(): String {
         val application = makeApplication()
         val currentAccount = application.getCurrentAccountWithParameters()
@@ -46,7 +44,6 @@ actual class MSAuthenticationProvider actual constructor(
         }
     }
 
-    @Throws(NetworkException::class, AuthenticationError::class, Exception::class)
     actual override suspend fun signOut() {
         val application = makeApplication()
         val account = getCurrentAccount() ?: return
@@ -63,7 +60,6 @@ actual class MSAuthenticationProvider actual constructor(
         application.signoutWithAccount(account, parameters)
     }
 
-    @Throws(NetworkException::class, AuthenticationError::class, Exception::class)
     actual override suspend fun getUserName(): String? {
         val account = getCurrentAccount() ?: throw AuthenticationError()
         return account.username
