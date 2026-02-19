@@ -1,3 +1,4 @@
+import com.android.build.api.dsl.androidLibrary
 import com.rickclephas.kmp.nativecoroutines.gradle.ExposedSeverity
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -7,7 +8,6 @@ plugins {
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.nativecoroutines)
     alias(libs.plugins.kotlinCocoapods)
-    alias(libs.plugins.kmmdeploy)
     alias(libs.plugins.mokkery)
     `maven-publish`
 }
@@ -17,9 +17,18 @@ version = "1.0"
 
 kotlin {
     jvmToolchain(21)
-    androidTarget {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
+    androidLibrary {
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        namespace = "dev.igorcferreira.msgraphapi"
+        minSdk = libs.versions.android.minSdk.get().toInt()
+        withHostTestBuilder {
+            useLibrary("android.test.runner")
+            useLibrary("android.test.mock")
+        }
+        compilations.configureEach {
+            compilerOptions.configure {
+                jvmTarget.set(JvmTarget.JVM_17)
+            }
         }
     }
 
@@ -98,18 +107,4 @@ kotlin {
 
 nativeCoroutines {
     exposedSeverity = ExposedSeverity.NONE
-}
-
-android {
-    namespace = "dev.igorcferreira.msgraphapi"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    defaultConfig {
-        minSdk = libs.versions.android.minSdk.get().toInt()
-    }
-    useLibrary("android.test.mock")
-    useLibrary("android.test.runner")
 }

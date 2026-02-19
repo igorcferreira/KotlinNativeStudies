@@ -21,6 +21,7 @@ nativecoroutines="1.0.1"
 msal="8.2.1"
 koin = "4.2.0-RC1"
 koin-annotation = "2.3.1"
+koin-compiler = "0.3.0"
 ksp = "2.3.3"
 mokkery = "3.2.0"
 kmmdeploy = "2.3.0"
@@ -71,7 +72,7 @@ androidx-material3-adaptive-navigation3 = { group = "androidx.compose.material3.
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
-androidLibrary = { id = "com.android.library", version.ref = "agp" }
+androidLibrary = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
@@ -81,3 +82,4 @@ kotlinCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = 
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 mokkery = { id = "dev.mokkery", version.ref = "mokkery" }
 kmmdeploy = { id = "io.github.kevinnzou.kmmdeploy", version.ref = "kmmdeploy" }
+koinCompiler = { id = "io.insert-koin.compiler.plugin", version.ref = "koin-compiler" }

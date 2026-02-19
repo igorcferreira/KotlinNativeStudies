@@ -13,6 +13,7 @@ plugins {
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.kmmdeploy) apply false
     alias(libs.plugins.mokkery) apply false
+    alias(libs.plugins.koinCompiler) apply false
 }
 
 val bundleInstall by tasks.registering(Exec::class) {

@@ -1,3 +1,4 @@
+import com.android.build.api.dsl.androidLibrary
 import com.rickclephas.kmp.nativecoroutines.gradle.ExposedSeverity
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -7,13 +8,16 @@ plugins {
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.nativecoroutines)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.kmmdeploy)
     alias(libs.plugins.mokkery)
+    alias(libs.plugins.koinCompiler)
     `maven-publish`
 }
 
 kotlin {
-    androidTarget {
+    androidLibrary {
+        namespace = "dev.igorcferreira.sharepointembedded.shared"
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        minSdk = libs.versions.android.minSdk.get().toInt()
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
         }
@@ -88,18 +92,6 @@ kotlin {
 
 nativeCoroutines {
     exposedSeverity = ExposedSeverity.NONE
-}
-
-android {
-    namespace = "dev.igorcferreira.sharepointembedded.shared"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    defaultConfig {
-        minSdk = libs.versions.android.minSdk.get().toInt()
-    }
 }
 
 // KSP Tasks
