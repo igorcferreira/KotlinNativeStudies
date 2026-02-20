@@ -1,4 +1,3 @@
-import com.android.build.api.dsl.androidLibrary
 import com.rickclephas.kmp.nativecoroutines.gradle.ExposedSeverity
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -21,14 +20,17 @@ kotlin {
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         namespace = "dev.igorcferreira.msgraphapi"
         minSdk = libs.versions.android.minSdk.get().toInt()
-        withHostTestBuilder {
+        withHostTest {
+            isIncludeAndroidResources = true
             useLibrary("android.test.runner")
             useLibrary("android.test.mock")
         }
-        compilations.configureEach {
-            compilerOptions.configure {
-                jvmTarget.set(JvmTarget.JVM_17)
-            }
+        withDeviceTest {
+            useLibrary("android.test.runner")
+            useLibrary("android.test.mock")
+        }
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
         }
     }
 
@@ -87,16 +89,22 @@ kotlin {
             implementation(libs.coroutines.test)
             implementation(libs.ktor.client.mock)
         }
-        androidUnitTest.dependencies {
-            implementation(libs.androidx.testExt.junit)
-            implementation(libs.androidx.test.core)
-            implementation(libs.mockk)
-            implementation(libs.mockk.android)
+        @Suppress("unused")
+        val androidHostTest by getting {
+            dependencies {
+                implementation(libs.androidx.testExt.junit)
+                implementation(libs.androidx.test.core)
+            }
         }
-        androidInstrumentedTest.dependencies {
-            implementation(libs.androidx.espresso.core)
-            implementation(libs.mockk)
-            implementation(libs.mockk.android)
+        @Suppress("unused")
+        val androidDeviceTest by getting {
+            dependencies {
+                dependencies {
+                    implementation(libs.androidx.espresso.core)
+                    implementation(libs.kotlin.testJunit)
+                    implementation(libs.androidx.testExt.junit)
+                }
+            }
         }
     }
 
@@ -107,4 +115,8 @@ kotlin {
 
 nativeCoroutines {
     exposedSeverity = ExposedSeverity.NONE
+}
+
+tasks.withType<AbstractTestTask> {
+    failOnNoDiscoveredTests = false
 }

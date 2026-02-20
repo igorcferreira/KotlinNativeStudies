@@ -1,4 +1,3 @@
-import com.android.build.api.dsl.androidLibrary
 import com.rickclephas.kmp.nativecoroutines.gradle.ExposedSeverity
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -20,6 +19,15 @@ kotlin {
         minSdk = libs.versions.android.minSdk.get().toInt()
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
+        }
+        withHostTest {
+            isIncludeAndroidResources = true
+            useLibrary("android.test.runner")
+            useLibrary("android.test.mock")
+        }
+        withDeviceTest {
+            useLibrary("android.test.runner")
+            useLibrary("android.test.mock")
         }
     }
 
@@ -69,19 +77,27 @@ kotlin {
         appleMain.dependencies {
             implementation(libs.ktor.client.darwin)
         }
-        androidUnitTest.dependencies {
-            implementation(libs.kotlin.testJunit)
-            implementation(libs.androidx.testExt.junit)
-        }
-        androidInstrumentedTest.dependencies {
-            implementation(libs.androidx.espresso.core)
-            implementation(libs.kotlin.testJunit)
-            implementation(libs.androidx.testExt.junit)
-        }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
             implementation(libs.coroutines.test)
             implementation(libs.ktor.client.mock)
+        }
+        @Suppress("unused")
+        val androidHostTest by getting {
+            dependencies {
+                implementation(libs.androidx.testExt.junit)
+                implementation(libs.androidx.test.core)
+            }
+        }
+        @Suppress("unused")
+        val androidDeviceTest by getting {
+            dependencies {
+                dependencies {
+                    implementation(libs.androidx.espresso.core)
+                    implementation(libs.kotlin.testJunit)
+                    implementation(libs.androidx.testExt.junit)
+                }
+            }
         }
     }
 
@@ -105,4 +121,8 @@ dependencies {
 // Trigger Common Metadata Generation from Native tasks
 tasks.matching { it.name.startsWith("ksp") && it.name != "kspCommonMainKotlinMetadata" }.configureEach {
     dependsOn("kspCommonMainKotlinMetadata")
+}
+
+tasks.withType<AbstractTestTask> {
+    failOnNoDiscoveredTests = false
 }

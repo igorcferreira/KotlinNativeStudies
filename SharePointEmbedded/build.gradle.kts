@@ -14,6 +14,7 @@ plugins {
     alias(libs.plugins.kmmdeploy) apply false
     alias(libs.plugins.mokkery) apply false
     alias(libs.plugins.koinCompiler) apply false
+    alias(libs.plugins.kotlinAndroid) apply false
 }
 
 val bundleInstall by tasks.registering(Exec::class) {
