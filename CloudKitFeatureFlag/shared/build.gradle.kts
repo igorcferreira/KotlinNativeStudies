@@ -9,14 +9,23 @@ plugins {
 }
 
 kotlin {
-    val libraryNamespace = project.property("project.namespace") as String
+    val applicationId = project.property("project.application-id") as String
     androidLibrary {
-        namespace = libraryNamespace
+        namespace = "dev.igorcferreira.cloudkitfeatureflag"
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
         }
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
+        withHostTest {
+            isIncludeAndroidResources = true
+        }
+        withDeviceTest {
+            targetSdk {
+                version = release(libs.versions.android.compileSdk.get().toInt())
+            }
+            this.applicationId = applicationId
+        }
     }
 
     val frameworkName = project.property("project.framework-name") as String
@@ -29,7 +38,7 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = frameworkName
             isStatic = true
-            binaryOption("bundleId", libraryNamespace)
+            binaryOption("bundleId", applicationId)
             xcf.add(this)
         }
     }
