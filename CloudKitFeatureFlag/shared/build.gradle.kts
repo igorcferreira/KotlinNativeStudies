@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -8,8 +9,9 @@ plugins {
 }
 
 kotlin {
+    val libraryNamespace = project.property("project.namespace") as String
     androidLibrary {
-        namespace = "dev.igorcferreira.cloudkitfeatureflag.shared"
+        namespace = libraryNamespace
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
         }
@@ -17,13 +19,18 @@ kotlin {
         minSdk = libs.versions.android.minSdk.get().toInt()
     }
 
+    val frameworkName = project.property("project.framework-name") as String
+    val xcf = XCFramework(frameworkName)
+
     listOf(
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "Shared"
+            baseName = frameworkName
             isStatic = true
+            binaryOption("bundleId", libraryNamespace)
+            xcf.add(this)
         }
     }
 
