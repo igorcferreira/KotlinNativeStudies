@@ -1,6 +1,7 @@
 package dev.igorcferreira.cloudkitfeatureflag.domain.logic
 
 import dev.igorcferreira.cloudkitfeatureflag.domain.repository.AppFeatureRepository
+import dev.igorcferreira.cloudkitfeatureflag.domain.repository.FileRepository
 import dev.igorcferreira.cloudkitfeatureflag.model.AppFeatures
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -8,9 +9,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 
 class AppFeatureManager(
     private val appFeatureRepository: AppFeatureRepository,
+    private val fileRepository: FileRepository,
+    private val json: Json,
     private val coroutineScope: CoroutineScope
 ) {
     private val _recordState = MutableStateFlow(AppFeatures())
@@ -21,13 +25,21 @@ class AppFeatureManager(
 
     fun refresh() = coroutineScope.launch { updateState() }
 
-    private suspend fun updateState() = _recordState.update {
-        appFeatureRepository.getAppFeatures()
+    private suspend fun updateState() {
+        val features = appFeatureRepository.getAppFeatures()
+        val content = json.encodeToString(features)
+        fileRepository.writeFile(".app_remote.config", content)
+        _recordState.update { features }
     }
 
     private fun loadInitialState() = coroutineScope.launch {
-        //TODO: Implement local storage/load
-        _recordState.update { AppFeatures() }
+        _recordState.update { fetchStoredContent() }
         updateState()
+    }
+
+    private fun fetchStoredContent(): AppFeatures {
+        val content = fileRepository.readFile("_remote.config")
+            ?: return AppFeatures()
+        return json.decodeFromString(content)
     }
 }

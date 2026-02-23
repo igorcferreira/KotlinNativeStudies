@@ -46,6 +46,9 @@ kotlin {
 
             // Config
             implementation(projects.arkana)
+
+            //File
+            implementation(libs.squareup.okio)
         }
         androidMain.dependencies {
             implementation(libs.ktor.client.android)
