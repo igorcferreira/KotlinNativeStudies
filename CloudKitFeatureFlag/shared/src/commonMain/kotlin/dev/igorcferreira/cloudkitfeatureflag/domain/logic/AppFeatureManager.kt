@@ -4,10 +4,13 @@ import dev.igorcferreira.cloudkitfeatureflag.domain.repository.AppFeatureReposit
 import dev.igorcferreira.cloudkitfeatureflag.domain.repository.FileRepository
 import dev.igorcferreira.cloudkitfeatureflag.model.AppFeatures
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 
@@ -17,13 +20,28 @@ class AppFeatureManager(
     private val json: Json,
     private val coroutineScope: CoroutineScope
 ) {
-    private val _recordState = MutableStateFlow(AppFeatures())
+    private val _recordState = MutableStateFlow(AppFeatures.empty)
+    private var refreshJob: Job? = null
+
     val recordState: StateFlow<AppFeatures> get() = _recordState.asStateFlow()
     val state: AppFeatures get() = _recordState.value
 
     init { loadInitialState() }
 
-    fun refresh() = coroutineScope.launch { updateState() }
+    fun startRefresh() {
+        refreshJob?.cancel()
+        refreshJob = coroutineScope.launch {
+            while (isActive) {
+                updateState()
+                delay(60_000) //Delay 1 minute
+            }
+        }
+    }
+
+    fun stopRefresh() {
+        refreshJob?.cancel()
+        refreshJob = null
+    }
 
     private suspend fun updateState() {
         val features = appFeatureRepository.getAppFeatures()
@@ -39,7 +57,7 @@ class AppFeatureManager(
 
     private fun fetchStoredContent(): AppFeatures {
         val content = fileRepository.readFile("_remote.config")
-            ?: return AppFeatures()
+            ?: return state
         return json.decodeFromString(content)
     }
 }

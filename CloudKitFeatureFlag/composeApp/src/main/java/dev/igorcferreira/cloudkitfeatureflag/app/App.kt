@@ -27,6 +27,12 @@ fun App(
     viewModel: AppViewModel = viewModel()
 ) {
     val features by viewModel.state.collectAsStateWithLifecycle()
+    DisposableEffect(viewModel) {
+        viewModel.startRefresh()
+        onDispose {
+            viewModel.stopRefresh()
+        }
+    }
     AppContent(features = features)
 }
 

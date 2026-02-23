@@ -12,4 +12,7 @@ class AppViewModel: ViewModel(), KoinComponent {
     private val manager by inject<AppFeatureManager>()
     val state: StateFlow<AppFeatures>
         get() = manager.recordState
+
+    fun startRefresh() = manager.startRefresh()
+    fun stopRefresh() = manager.stopRefresh()
 }

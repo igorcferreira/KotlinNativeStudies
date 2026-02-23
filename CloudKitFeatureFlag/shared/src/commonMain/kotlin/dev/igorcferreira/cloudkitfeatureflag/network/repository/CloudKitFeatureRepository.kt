@@ -1,7 +1,7 @@
 package dev.igorcferreira.cloudkitfeatureflag.network.repository
 
+import dev.igorcferreira.cloudkitfeatureflag.network.model.CloudKitAppFeatureRecord
 import dev.igorcferreira.cloudkitfeatureflag.network.model.CloudKitAppFeaturesResponse
-import dev.igorcferreira.cloudkitfeatureflag.network.model.CloudKitIntField
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.post
@@ -18,7 +18,7 @@ class CloudKitFeatureRepository(
     suspend fun getFeatures(
         recordName: String,
         container: String
-    ): Map<String, CloudKitIntField> {
+    ): CloudKitAppFeatureRecord {
         val query = """
             {
             "records": [
@@ -38,6 +38,6 @@ class CloudKitFeatureRepository(
             }
         }
         val records: CloudKitAppFeaturesResponse = response.body()
-        return records.records.firstOrNull()?.fields ?: emptyMap()
+        return records.records.first()
     }
 }
