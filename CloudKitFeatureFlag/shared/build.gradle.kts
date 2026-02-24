@@ -92,3 +92,11 @@ dependencies {
 tasks.matching { it.name.startsWith("ksp") && it.name != "kspCommonMainKotlinMetadata" }.configureEach {
     dependsOn("kspCommonMainKotlinMetadata")
 }
+
+tasks.register<PackageFramework>("packageFramework") {
+    val frameworkName = project.property("project.framework-name") as String
+    dependsOn("assemble${frameworkName}ReleaseXCFramework")
+    workingDir = rootProject.layout.projectDirectory
+    framework = project.layout.buildDirectory.file("XCFrameworks/release/$frameworkName.xcframework")
+    packageTemplate = rootProject.layout.projectDirectory.file("Package.swift.template")
+}

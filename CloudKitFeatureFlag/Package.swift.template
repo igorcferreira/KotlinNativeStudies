@@ -1,0 +1,18 @@
+// swift-tools-version:6.2
+import PackageDescription
+
+let package = Package(
+   name: "${FRAMEWORK_NAME}",
+   platforms: [
+     .iOS(.v26),
+   ],
+   products: [
+      .library(name: "${FRAMEWORK_NAME}", targets: ["${FRAMEWORK_NAME}"])
+   ],
+   targets: [
+      .binaryTarget(
+         name: "${FRAMEWORK_NAME}",
+         path: "${FRAMEWORK_PATH}"
+      )
+   ]
+)
