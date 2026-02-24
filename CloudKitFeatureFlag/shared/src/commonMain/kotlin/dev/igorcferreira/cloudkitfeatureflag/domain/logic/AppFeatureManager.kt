@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.serialization.json.Json
 
-class AppFeatureManager(
+class AppFeatureManager internal constructor(
     private val appFeatureRepository: AppFeatureRepository,
     private val fileRepository: FileRepository,
     private val json: Json,

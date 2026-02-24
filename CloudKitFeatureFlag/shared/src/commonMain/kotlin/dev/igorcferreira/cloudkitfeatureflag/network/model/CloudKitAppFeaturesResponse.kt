@@ -3,12 +3,12 @@ package dev.igorcferreira.cloudkitfeatureflag.network.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CloudKitAppFeaturesResponse(
+internal data class CloudKitAppFeaturesResponse(
     val records: List<CloudKitAppFeatureRecord> = emptyList(),
 )
 
 @Serializable
-data class CloudKitAppFeatureRecord(
+internal data class CloudKitAppFeatureRecord(
     val recordName: String,
     val recordType: String,
     val fields: Map<String, CloudKitIntField> = emptyMap(),
@@ -19,7 +19,7 @@ data class CloudKitAppFeatureRecord(
 )
 
 @Serializable
-data class CloudKitIntField(
+internal data class CloudKitIntField(
     val value: Long? = null,
     val type: String? = null,
 ) {
@@ -28,7 +28,7 @@ data class CloudKitIntField(
 }
 
 @Serializable
-data class CloudKitAuditInfo(
+internal data class CloudKitAuditInfo(
     val timestamp: Long,
     val userRecordName: String,
     val deviceID: String,

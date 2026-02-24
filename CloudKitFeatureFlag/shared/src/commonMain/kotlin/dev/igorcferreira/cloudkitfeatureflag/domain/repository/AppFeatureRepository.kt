@@ -5,7 +5,7 @@ import dev.igorcferreira.cloudkitfeatureflag.model.AppFeatures
 import dev.igorcferreira.cloudkitfeatureflag.network.model.CloudKitAppFeatureRecord
 import dev.igorcferreira.cloudkitfeatureflag.network.repository.CloudKitFeatureRepository
 
-class AppFeatureRepository(
+internal class AppFeatureRepository constructor(
     private val container: String,
     private val recordName: String,
     private val cloudKitFeatureRepository: CloudKitFeatureRepository,

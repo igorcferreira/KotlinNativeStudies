@@ -26,7 +26,7 @@ abstract class PackageFramework @Inject constructor(
             throw RuntimeException("XCFramework does not exist: ${frameworkFile.absolutePath}")
         }
 
-        val outputDir = File(File(workingDir.asFile, "Package"), frameworkFile.nameWithoutExtension)
+        val outputDir = File(workingDir.asFile, frameworkFile.nameWithoutExtension)
         val zipFile = zip(frameworkFile, outputDir)
         val checksum = calculateCheckSum(zipFile)
         packageFramework(zipFile, packageTemplate.asFile, outputDir)

@@ -11,7 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import org.koin.dsl.module
 
-val domainModule = module {
+internal val domainModule = module {
     factory<DomainMapper<CloudKitAppFeatureRecord, AppFeatures>> {
         AppFeatureMapper()
     }

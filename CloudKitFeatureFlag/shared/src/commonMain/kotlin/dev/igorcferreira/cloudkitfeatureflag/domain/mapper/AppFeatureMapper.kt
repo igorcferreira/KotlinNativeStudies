@@ -4,7 +4,7 @@ import dev.igorcferreira.cloudkitfeatureflag.model.AppFeatures
 import dev.igorcferreira.cloudkitfeatureflag.network.model.CloudKitAppFeatureRecord
 import kotlin.time.Clock
 
-class AppFeatureMapper: DomainMapper<CloudKitAppFeatureRecord, AppFeatures> {
+internal class AppFeatureMapper: DomainMapper<CloudKitAppFeatureRecord, AppFeatures> {
     override fun map(
         networkModel: CloudKitAppFeatureRecord
     ): AppFeatures {

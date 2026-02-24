@@ -10,7 +10,7 @@ import io.ktor.client.request.url
 import io.ktor.http.*
 import io.ktor.http.headers
 
-class CloudKitFeatureRepository(
+internal class CloudKitFeatureRepository(
     private val httpClient: HttpClient,
 ) {
     suspend fun getFeatures(

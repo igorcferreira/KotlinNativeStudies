@@ -10,7 +10,7 @@ import platform.Foundation.NSFileManager
 import platform.Foundation.NSUserDomainMask
 
 @OptIn(ExperimentalForeignApi::class)
-actual val fileModule: Module = module {
+internal actual val fileModule: Module = module {
     factory<FileRepository> {
         val url = NSFileManager.defaultManager.URLForDirectory(
             directory = NSDocumentDirectory,

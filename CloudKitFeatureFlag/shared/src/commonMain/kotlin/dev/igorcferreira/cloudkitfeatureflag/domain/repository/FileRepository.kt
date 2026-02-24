@@ -3,7 +3,7 @@ package dev.igorcferreira.cloudkitfeatureflag.domain.repository
 import okio.FileSystem
 import okio.Path.Companion.toPath
 
-class FileRepository(
+internal class FileRepository(
     private val fileSystem: FileSystem,
     private val rootPath: String
 ) {

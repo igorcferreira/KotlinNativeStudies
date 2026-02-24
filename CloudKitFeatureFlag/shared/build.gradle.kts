@@ -93,10 +93,23 @@ tasks.matching { it.name.startsWith("ksp") && it.name != "kspCommonMainKotlinMet
     dependsOn("kspCommonMainKotlinMetadata")
 }
 
-tasks.register<PackageFramework>("packageFramework") {
+val debugPackage = tasks.register<PackageFramework>("packageDebugFramework") {
+    val frameworkName = project.property("project.framework-name") as String
+    dependsOn("assemble${frameworkName}DebugXCFramework")
+    workingDir = rootProject.layout.projectDirectory.file("Package/debug")
+    framework = project.layout.buildDirectory.file("XCFrameworks/debug/$frameworkName.xcframework")
+    packageTemplate = rootProject.layout.projectDirectory.file("Package.swift.template")
+}
+
+val releasePackage = tasks.register<PackageFramework>("packageReleaseFramework") {
     val frameworkName = project.property("project.framework-name") as String
     dependsOn("assemble${frameworkName}ReleaseXCFramework")
-    workingDir = rootProject.layout.projectDirectory
+    workingDir = rootProject.layout.projectDirectory.file("Package/release")
     framework = project.layout.buildDirectory.file("XCFrameworks/release/$frameworkName.xcframework")
     packageTemplate = rootProject.layout.projectDirectory.file("Package.swift.template")
+}
+
+tasks.register("packageFramework") {
+    val frameworkName = project.property("project.framework-name") as String
+    dependsOn("assemble${frameworkName}XCFramework", debugPackage, releasePackage)
 }

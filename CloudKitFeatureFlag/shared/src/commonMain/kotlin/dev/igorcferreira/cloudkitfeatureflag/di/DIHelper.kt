@@ -8,7 +8,7 @@ import org.koin.core.module.Module
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
 
-expect val fileModule: Module
+internal expect val fileModule: Module
 
 class DIHelper {
     class KoinBridge: KoinComponent {
@@ -18,7 +18,7 @@ class DIHelper {
 
     @OptIn(ExperimentalObjCRefinement::class)
     companion object {
-        val MODULES = listOf(
+        private val MODULES = listOf(
             fileModule,
             networkModule,
             domainModule,
