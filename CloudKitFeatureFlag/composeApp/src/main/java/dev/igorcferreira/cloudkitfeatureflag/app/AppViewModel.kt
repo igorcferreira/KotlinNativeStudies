@@ -6,7 +6,6 @@ import dev.igorcferreira.cloudkitfeatureflag.model.AppFeatures
 import kotlinx.coroutines.flow.StateFlow
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import kotlin.getValue
 
 class AppViewModel: ViewModel(), KoinComponent {
     private val manager by inject<AppFeatureManager>()

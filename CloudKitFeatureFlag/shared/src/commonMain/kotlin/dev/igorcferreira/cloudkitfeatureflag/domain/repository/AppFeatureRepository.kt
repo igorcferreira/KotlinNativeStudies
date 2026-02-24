@@ -3,7 +3,6 @@ package dev.igorcferreira.cloudkitfeatureflag.domain.repository
 import dev.igorcferreira.cloudkitfeatureflag.domain.mapper.DomainMapper
 import dev.igorcferreira.cloudkitfeatureflag.model.AppFeatures
 import dev.igorcferreira.cloudkitfeatureflag.network.model.CloudKitAppFeatureRecord
-import dev.igorcferreira.cloudkitfeatureflag.network.model.CloudKitIntField
 import dev.igorcferreira.cloudkitfeatureflag.network.repository.CloudKitFeatureRepository
 
 class AppFeatureRepository(

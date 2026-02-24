@@ -3,15 +3,11 @@ package dev.igorcferreira.cloudkitfeatureflag.domain.logic
 import dev.igorcferreira.cloudkitfeatureflag.domain.repository.AppFeatureRepository
 import dev.igorcferreira.cloudkitfeatureflag.domain.repository.FileRepository
 import dev.igorcferreira.cloudkitfeatureflag.model.AppFeatures
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 
 class AppFeatureManager(
@@ -46,7 +42,7 @@ class AppFeatureManager(
     private suspend fun updateState() {
         val features = appFeatureRepository.getAppFeatures()
         val content = json.encodeToString(features)
-        fileRepository.writeFile(".app_remote.config", content)
+        fileRepository.writeFile(FILE_NAME, content)
         _recordState.update { features }
     }
 
@@ -56,8 +52,12 @@ class AppFeatureManager(
     }
 
     private fun fetchStoredContent(): AppFeatures {
-        val content = fileRepository.readFile("_remote.config")
+        val content = fileRepository.readFile(FILE_NAME)
             ?: return state
         return json.decodeFromString(content)
+    }
+
+    private companion object {
+        const val FILE_NAME = ".app_remote.config"
     }
 }

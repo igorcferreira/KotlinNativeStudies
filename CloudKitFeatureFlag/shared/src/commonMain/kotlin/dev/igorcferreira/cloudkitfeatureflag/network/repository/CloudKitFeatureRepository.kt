@@ -2,15 +2,13 @@ package dev.igorcferreira.cloudkitfeatureflag.network.repository
 
 import dev.igorcferreira.cloudkitfeatureflag.network.model.CloudKitAppFeatureRecord
 import dev.igorcferreira.cloudkitfeatureflag.network.model.CloudKitAppFeaturesResponse
-import io.ktor.client.HttpClient
-import io.ktor.client.call.body
+import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.request.url
-import io.ktor.http.ContentType
-import io.ktor.http.contentType
+import io.ktor.http.*
 import io.ktor.http.headers
-import io.ktor.http.headersOf
 
 class CloudKitFeatureRepository(
     private val httpClient: HttpClient,
