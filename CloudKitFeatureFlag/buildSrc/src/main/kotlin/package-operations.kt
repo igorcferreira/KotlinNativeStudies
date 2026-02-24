@@ -1,7 +1,6 @@
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.file.RegularFile
-import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Provider
 import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.tasks.Input
@@ -13,7 +12,7 @@ abstract class PackageFramework @Inject constructor(
     private val providerFactory: ProviderFactory
 ): DefaultTask() {
     @Input
-    lateinit var workingDir: FileSystemLocation
+    lateinit var outputDir: FileSystemLocation
     @Input
     lateinit var framework: Provider<RegularFile>
     @Input
@@ -26,10 +25,10 @@ abstract class PackageFramework @Inject constructor(
             throw RuntimeException("XCFramework does not exist: ${frameworkFile.absolutePath}")
         }
 
-        val outputDir = File(workingDir.asFile, frameworkFile.nameWithoutExtension)
-        val zipFile = zip(frameworkFile, outputDir)
+        val outputFileDir = File(outputDir.asFile, frameworkFile.nameWithoutExtension)
+        val zipFile = zip(frameworkFile, outputFileDir)
         val checksum = calculateCheckSum(zipFile)
-        packageFramework(zipFile, packageTemplate.asFile, outputDir)
+        packageFramework(zipFile, packageTemplate.asFile, outputFileDir)
         print("Framework generated at $outputDir. Zip checksum is $checksum")
     }
 
