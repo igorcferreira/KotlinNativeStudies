@@ -8,15 +8,24 @@ plugins {
     alias(libs.plugins.ksp)
 }
 
+val frameworkName = project.property("project.framework-name") as String
+val frameworkVersion = project.property("project.version-code") as String
+val frameworkVersionString = project.property("project.version-name") as String
+
 kotlin {
     val applicationId = project.property("project.application-id") as String
+
     androidLibrary {
         namespace = "dev.igorcferreira.cloudkitfeatureflag"
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        minSdk = libs.versions.android.minSdk.get().toInt()
+        aarMetadata {
+            minAgpVersion = libs.versions.agp.get()
+            minCompileSdk = libs.versions.android.compileSdk.get().toInt()
+        }
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
         }
-        compileSdk = libs.versions.android.compileSdk.get().toInt()
-        minSdk = libs.versions.android.minSdk.get().toInt()
         withHostTest {
             isIncludeAndroidResources = true
         }
@@ -24,11 +33,10 @@ kotlin {
             targetSdk {
                 version = release(libs.versions.android.compileSdk.get().toInt())
             }
-            this.applicationId = applicationId
+            this.applicationId =  applicationId
         }
     }
 
-    val frameworkName = project.property("project.framework-name") as String
     val xcf = XCFramework(frameworkName)
 
     listOf(
@@ -39,6 +47,8 @@ kotlin {
             baseName = frameworkName
             isStatic = true
             binaryOption("bundleId", applicationId)
+            binaryOption("bundleVersion", frameworkVersion)
+            binaryOption("bundleShortVersionString", frameworkVersionString)
             xcf.add(this)
         }
     }
@@ -94,7 +104,6 @@ tasks.matching { it.name.startsWith("ksp") && it.name != "kspCommonMainKotlinMet
 }
 
 val debugPackage = tasks.register<PackageFramework>("packageDebugFramework") {
-    val frameworkName = project.property("project.framework-name") as String
     dependsOn("assemble${frameworkName}DebugXCFramework")
     outputDir = rootProject.layout.projectDirectory.file("Package/debug")
     framework = project.layout.buildDirectory.file("XCFrameworks/debug/$frameworkName.xcframework")
@@ -102,7 +111,6 @@ val debugPackage = tasks.register<PackageFramework>("packageDebugFramework") {
 }
 
 val releasePackage = tasks.register<PackageFramework>("packageReleaseFramework") {
-    val frameworkName = project.property("project.framework-name") as String
     dependsOn("assemble${frameworkName}ReleaseXCFramework")
     outputDir = rootProject.layout.projectDirectory.file("Package/release")
     framework = project.layout.buildDirectory.file("XCFrameworks/release/$frameworkName.xcframework")
@@ -110,6 +118,5 @@ val releasePackage = tasks.register<PackageFramework>("packageReleaseFramework")
 }
 
 tasks.register("packageFramework") {
-    val frameworkName = project.property("project.framework-name") as String
     dependsOn("assemble${frameworkName}XCFramework", debugPackage, releasePackage)
 }
