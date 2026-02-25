@@ -6,7 +6,7 @@ import kotlin.time.Clock
 @Serializable
 data class AppFeatures(
     val id: Long,
-    val featureA: Boolean = true,
+    val featureA: Boolean = false,
     val featureB: Boolean = false,
 ) {
     override fun hashCode(): Int = id.hashCode()

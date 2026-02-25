@@ -19,11 +19,10 @@ struct FlagInformation: View {
 }
 
 struct ContentView: View {
-    private let appFeatures: AppFeatures
     @State private var showContent = false
+    @Environment(\.appFeatureManager) var appFeatureManager
     
-    init(appFeatures: AppFeatures, showContent: Bool = false) {
-        self.appFeatures = appFeatures
+    init(showContent: Bool = false) {
         self.showContent = showContent
     }
     
@@ -34,14 +33,8 @@ struct ContentView: View {
             }
 
             if showContent {
-                VStack(spacing: 16) {
-                    Image(systemName: "swift")
-                        .font(.system(size: 200))
-                        .foregroundColor(.accentColor)
-                    Text("SwiftUI: \(Greeting().greet())")
-                    FlagInformation(appFeatures: appFeatures)
-                }
-                .transition(.move(edge: .top).combined(with: .opacity))
+                FlagInformation(appFeatures: appFeatureManager.state)
+                    .transition(.move(edge: .top).combined(with: .opacity))
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
@@ -51,6 +44,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(appFeatures: AppFeatures.companion.empty)
+        ContentView()
     }
 }

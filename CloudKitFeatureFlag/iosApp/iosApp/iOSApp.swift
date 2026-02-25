@@ -1,25 +1,18 @@
 import SwiftUI
 import Shared
 
-extension AppFeatures: @retroactive Identifiable {}
-
 @main
 struct iOSApp: App {
-    let diBridge: DIHelper.KoinBridge = {
-        DIHelper.companion.buildBridge()
-    }()
-    var manager: AppFeatureManager {
-        diBridge.manager
-    }
+    @Environment(\.appFeatureManager) var appFeatureManager
     
     var body: some Scene {
         WindowGroup {
-            ContentView(appFeatures: manager.state)
+            ContentView()
                 .onAppear {
-                    manager.startRefresh()
+                    appFeatureManager.startRefresh()
                 }
                 .onDisappear {
-                    manager.stopRefresh()
+                    appFeatureManager.stopRefresh()
                 }
         }
     }
